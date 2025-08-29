@@ -1,26 +1,32 @@
-class Lanche:
-    def __init__(self, nome, ingredientes, valor):
-        self.nome = nome
-        self.ingredientes = ingredientes
-        self.valor = valor
+from sqlalchemy import create_engine, Integer, String, Float, Column, ForeignKey
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
-class Pedido:
-    def __init__(self):
-        self.itens = []
+db = create_engine('sqlite:///Proj_Lanches\database.db', echo = True)
+Base = declarative_base()
 
-    def adicionar_item(self, item):
-        self.itens.append(item)
-    
-    def mostrar_valor(self):
-        total = 0
-        for item in self.itens:
-            total += item.valor
-        return total
-    
-x_burguer = Lanche('X-Burguer', 'Pão brioche, hambúrguer artesanal 150g, queijo cheddar e molho especial', 29.90)
+class Lanche(Base):
+    __tablename__ = 'lanches'
+    id = Column(Integer, primary_key= True)
+    nome = Column(String, nullable= False)
+    ingredientes = Column(String)
+    valor = Column(Float, nullable= False)
 
-pedido = Pedido()
+    pedidos = relationship('Pedido', back_populates = 'Lanche')
 
-pedido.adicionar_item(x_burguer)
-pedido.adicionar_item(x_burguer)
-print(pedido.mostrar_valor())
+class Pedido(Base):
+    __tablename__ = 'pedidos'
+    id = Column(Integer, primary_key= True)
+    itens = Column(Integer, ForeignKey('lanches.id'))
+    total = Column(Float, nullable= False)
+
+    pedidos = relationship('Lanche', back_populates = 'Pedido')
+
+Base.metadata.create_all(db)
+
+Session = sessionmaker(bind = db)
+session = Session()
+
+x_burguer = Lanche(nome = 'X-Burguer', ingredientes = 'Pão Brioche, hambúrguer 150g, queijo cheddar e molho especial', valor = 23.90)
+session.add(x_burguer)
+
+session.commit()
