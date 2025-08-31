@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Float, insert, bindparam, ForeignKey, func
 from sqlalchemy.orm import Session
 
-engine = create_engine('sqlite:///Proj_Lanches/test.db', echo = True)
+engine = create_engine('sqlite:///Proj_Lanches/Test_projects/test.db', echo = True)
 
 meta = MetaData()
 
