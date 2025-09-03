@@ -13,6 +13,7 @@ class PedidoLanche(Base):
     id = Column(Integer, primary_key = True)
     pedido_id = Column(ForeignKey('pedidos.id'))
     lanche_id = Column(ForeignKey('lanches.id'))
+    quantidade = Column(Integer, nullable = False, default = 1)
 
 class Lanche(Base):
     __tablename__ = 'lanches'
@@ -40,10 +41,14 @@ class Pedido(Base):
         self.cliente = cliente
         self.data = data
         self.lanches = lanches
-    
-    def fazer_pedido(cliente, data, lanches_id):
-        lanches = session.query(Lanche).filter(Lanche.id.in_(lanches_id)).all() #lê somente a ID de cada lanche para fazer o pedido
-        session.add(Pedido(cliente = cliente, data = data, lanches = lanches))
+
+    def fazer_pedido(cliente, data, lancheid_quantidade):
+        pedido = Pedido(cliente = cliente, data = data, lanches = [])
+        session.add(pedido)
+        session.flush()
+
+        for lanche_id, qtd in lancheid_quantidade.items():
+            session.add(PedidoLanche(pedido_id = pedido.id, lanche_id = lanche_id, quantidade = qtd))
         session.commit()
 
 class Cliente(Base):
@@ -60,7 +65,9 @@ class Cliente(Base):
 
 Base.metadata.create_all(bind = db)
 
-#Cliente.cadastrar_cliente('Giuseppe')
-#Cliente.cadastrar_cliente('Josefa')
-#Lanche.cadastrar_lanche('X-Burguer', 23.90)
-#Lanche.cadastrar_lanche('X-Bacon', 27.90)
+Cliente.cadastrar_cliente('Giuseppe')
+Cliente.cadastrar_cliente('Josefa')
+Lanche.cadastrar_lanche('X-Burguer', 23.90)
+Lanche.cadastrar_lanche('X-Bacon', 27.90)
+
+Pedido.fazer_pedido(1, datetime.today(), {1: 2, 2: 1})
