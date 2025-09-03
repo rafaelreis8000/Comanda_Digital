@@ -55,18 +55,22 @@ class Cliente(Base):
     __tablename__ = 'clientes'
     id = Column(Integer, primary_key = True)
     nome = Column(String, nullable = False)
+    sobrenome = Column(String, nullable = False)
+    telefone = Column(Integer, nullable = False)
 
-    def __init__(self, nome):
+    def __init__(self, nome, sobrenome, telefone):
         self.nome = nome
+        self.sobrenome = sobrenome
+        self.telefone = telefone
 
-    def cadastrar_cliente(nome):
-        session.add(Cliente(nome = nome))
+    def cadastrar_cliente(nome, sobrenome, telefone):
+        session.add(Cliente(nome = nome, sobrenome = sobrenome, telefone = telefone))
         session.commit()
 
 Base.metadata.create_all(bind = db)
 
-Cliente.cadastrar_cliente('Giuseppe')
-Cliente.cadastrar_cliente('Josefa')
+Cliente.cadastrar_cliente('Giuseppe', 'Cadura', 12999887675)
+Cliente.cadastrar_cliente('Pp', 'Marcondes', 1199876452)
 Lanche.cadastrar_lanche('X-Burguer', 23.90)
 Lanche.cadastrar_lanche('X-Bacon', 27.90)
 
