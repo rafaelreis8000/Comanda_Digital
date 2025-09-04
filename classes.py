@@ -14,6 +14,8 @@ class PedidoLanche(Base):
     pedido_id = Column(ForeignKey('pedidos.id'))
     lanche_id = Column(ForeignKey('lanches.id'))
     quantidade = Column(Integer, nullable = False, default = 1)
+    valor = Column(Float, nullable = False, default = 0)
+    total = Column(Float, nullable = False, default = 0)
 
 class Lanche(Base):
     __tablename__ = 'lanches'
@@ -47,8 +49,21 @@ class Pedido(Base):
         session.add(pedido)
         session.flush()
 
+        total_pedido = 0
+
         for lanche_id, qtd in lancheid_quantidade.items():
-            session.add(PedidoLanche(pedido_id = pedido.id, lanche_id = lanche_id, quantidade = qtd))
+            lanche = session.query(Lanche).get(lanche_id)
+            valor_unitario = lanche.valor
+            valor_total = lanche.valor * qtd
+            total_pedido += valor_total
+            pedido_lanche = PedidoLanche(
+                pedido_id = pedido.id,
+                lanche_id = lanche.id,
+                quantidade = qtd,
+                valor = valor_unitario,
+                total = total_pedido
+            )
+            session.add(pedido_lanche)
         session.commit()
 
 class Cliente(Base):
@@ -77,3 +92,6 @@ def testar_cadastro():
     Lanche.cadastrar_lanche('X-Bacon', 27.90)
 
     Pedido.fazer_pedido(1, datetime.today(), {1: 2, 2: 1})
+    Pedido.fazer_pedido(2, datetime.today(), {2: 5})
+
+testar_cadastro()
