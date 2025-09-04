@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, String, Integer, Float, DateTime, 
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from datetime import datetime
 
-db = create_engine('sqlite:///D:\GitHub\Proj_Lanches/banco.db')
+db = create_engine('sqlite:///Proj_Lanches/banco.db')
 Session = sessionmaker(bind = db)
 session = Session()
 
@@ -14,7 +14,6 @@ class PedidoLanche(Base):
     pedido_id = Column(ForeignKey('pedidos.id'))
     lanche_id = Column(ForeignKey('lanches.id'))
     quantidade = Column(Integer, nullable = False, default = 1)
-    valor = Column(Float, nullable = False, default = 0)
     total = Column(Float, nullable = False, default = 0)
 
 class Lanche(Base):
@@ -53,14 +52,11 @@ class Pedido(Base):
 
         for lanche_id, qtd in lancheid_quantidade.items():
             lanche = session.query(Lanche).get(lanche_id)
-            valor_unitario = lanche.valor
-            valor_total = lanche.valor * qtd
-            total_pedido += valor_total
+            total_pedido += (lanche.valor * qtd)
             pedido_lanche = PedidoLanche(
                 pedido_id = pedido.id,
                 lanche_id = lanche.id,
                 quantidade = qtd,
-                valor = valor_unitario,
                 total = total_pedido
             )
             session.add(pedido_lanche)
