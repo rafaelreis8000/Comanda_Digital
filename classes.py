@@ -69,9 +69,11 @@ class Cliente(Base):
 
 Base.metadata.create_all(bind = db)
 
-Cliente.cadastrar_cliente('Giuseppe', 'Cadura', 12999887675)
-Cliente.cadastrar_cliente('Pp', 'Marcondes', 1199876452)
-Lanche.cadastrar_lanche('X-Burguer', 23.90)
-Lanche.cadastrar_lanche('X-Bacon', 27.90)
+def testar_cadastro():
+    Cliente.cadastrar_cliente('Giuseppe', 'Cadura', 12999887675)
+    Cliente.cadastrar_cliente('Pp', 'Marcondes', 1199876452)
 
-Pedido.fazer_pedido(1, datetime.today(), {1: 2, 2: 1})
+    Lanche.cadastrar_lanche('X-Burguer', 23.90)
+    Lanche.cadastrar_lanche('X-Bacon', 27.90)
+
+    Pedido.fazer_pedido(1, datetime.today(), {1: 2, 2: 1})
