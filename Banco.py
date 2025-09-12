@@ -13,6 +13,7 @@ class PedidoLanche(Base):
     POR - Tabela de relacionamentos. Recebe a ID do pedido, a ID de cada lanche e suas quantidades. Essas informações
     são geradas na tabela Pedido. Baseado na quantidade de cada lanche e no preço de
     cada um, mostra o valor total do pedido
+
     ENG - Relationship Table. Recieves the order's ID, each burguer's ID and its quantities. These information are
     generated at Pedido's(Order) Table. Based on each burguer's quantity and its prices, shows the total cost of the order
     '''
@@ -27,6 +28,7 @@ class Lanche(Base):
     '''
     POR - Tabela Lanche. Cadastra os lanches do cardápio no sistema. Possui uma relação de vários para
     vários com Pedido, permitindo que vários pedidos possuam vários lanches.
+    
     ENG - Table Lanche(Burguer). Registers the burguers from the menu. Has a relationship of many to many
     with Pedido (Order), allowing many orders to have many burguers
     '''
