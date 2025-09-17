@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, String, Integer, Float, DateTime, 
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from datetime import datetime
 
-db = create_engine('sqlite:///Proj_Lanches/banco.db')
+db = create_engine('sqlite:///banco.db')
 Session = sessionmaker(bind = db)
 session = Session()
 
