@@ -36,14 +36,16 @@ class Lanche(Base):
     id = Column(Integer, primary_key = True)
     nome = Column(String, nullable = False)
     valor = Column(Float, nullable = False)
+    descricao = Column(String)
     pedidos = relationship('Pedido', secondary = 'pedido_lanches', back_populates = 'lanches')
 
-    def __init__(self, nome, valor):
+    def __init__(self, nome, valor, descricao):
         self.nome = nome
         self.valor = valor
+        self.descricao = descricao
 
-    def cadastrar_lanche(nome, valor):
-        session.add(Lanche(nome = nome, valor = valor))
+    def cadastrar_lanche(nome, valor, descricao = ''):
+        session.add(Lanche(nome = nome, valor = valor, descricao = descricao))
         session.commit()
 
 class Pedido(Base):
